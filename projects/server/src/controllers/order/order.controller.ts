@@ -86,7 +86,13 @@ export class OrderController {
     try {
       const orderId = Number(req.params.orderId);
       const branchId = req.user.branchId;
-      const result = await this.orderDashboardService.cancelOrder(orderId, branchId);
+      const branchIdQuery = Number(req.query.branchId);
+      const role = req.user.role;
+      const result = await this.orderDashboardService.cancelOrder(
+        orderId,
+        role.includes('admin') ? branchId : branchIdQuery,
+        role
+      );
       res.status(HttpStatusCode.Ok).json({
         statusCode: HttpStatusCode.Ok,
         message: 'Order canceled',

@@ -31,14 +31,14 @@ export default class Server {
     new CronJob();
   }
 
-   private initializeClient() {
+  private initializeClient() {
     const clientPath = '../../client/build';
     this.expressInstance.use(express.static(path.join(__dirname, clientPath)));
     this.expressInstance.get('*', (req, res) => {
       res.sendFile(path.join(__dirname, clientPath, 'index.html'));
     });
   }
-  
+
   private middlewareSetup() {
     // Setup common security protection (Helmet should come first)
     this.expressInstance.use(helmet());

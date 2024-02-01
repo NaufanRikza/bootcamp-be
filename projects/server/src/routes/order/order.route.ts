@@ -30,9 +30,7 @@ export class OrderRouter {
       );
     this.router
       .route('/cancel/:orderId')
-      .put(permissionsMiddleware(['branch_admin_access', 'can_update_order']), (req, res) =>
-        this.orderController.cancelOrder(req, res)
-      );
+      .put(permissionsMiddleware(['can_update_order']), (req, res) => this.orderController.cancelOrder(req, res));
     this.router
       .route('/dashboard/:invoiceNo')
       .get(permissionsMiddleware(['branch_admin_access', 'can_read_order']), (req, res) =>

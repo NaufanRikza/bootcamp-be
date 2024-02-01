@@ -21,7 +21,6 @@ export class OrderDashboardService {
   }
 
   async updateStatusOrder(newStatus: string, orderId: number, branchId: number) {
-    console.log(orderId, newStatus, branchId);
     const t = (await Order.sequelize?.transaction())!;
     try {
       if (!orderStatusList.includes(newStatus)) {
@@ -79,14 +78,14 @@ export class OrderDashboardService {
     }
   }
 
-  async cancelOrder(orderId: number, branchId: number) {
+  async cancelOrder(orderId: number, branchId: number, role: string) {
     const t = (await Order.sequelize?.transaction())!;
     try {
       const order = await Order.findByPk(orderId);
       if (!order) {
         throw new BadRequestException('Order not found');
       }
-      if (order.branchId !== branchId) {
+      if (order.branchId !== branchId && role.includes('admin')) {
         throw new BadRequestException('Order not found');
       }
       if (
